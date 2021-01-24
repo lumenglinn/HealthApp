@@ -2,7 +2,7 @@
 	"miniprogramRoot": "dist/",
 	"projectname": "HealthApp",
 	"description": "一个专业的护工平台",
-	"appid": "touristappid",
+	"appid": "wxcac06594a9c1fa69",
 	"setting": {
 		"urlCheck": true,
 		"es6": false,

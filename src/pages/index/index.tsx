@@ -1,31 +1,49 @@
 import React, { Component } from 'react'
-import { View, Text } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
+import Taro from '@tarojs/taro'
+import { View, Text, Button } from '@tarojs/components'
+import { AtButton, AtModal, AtModalHeader, AtModalContent, AtModalAction, AtMessage } from 'taro-ui'
 
-import "taro-ui/dist/style/components/button.scss" // 按需引入
 import './index.scss'
 
 export default class Index extends Component {
 
-  componentWillMount () { }
+  componentWillMount() { }
 
-  componentDidMount () { }
+  componentDidMount() { }
 
-  componentWillUnmount () { }
+  componentWillUnmount() { }
 
-  componentDidShow () { }
+  componentDidShow() { }
 
-  componentDidHide () { }
+  componentDidHide() { }
 
-  render () {
+  handleSelect = (type) => {
+    if (type === 'disease') {
+      Taro.atMessage({
+        'message': '该功能尚在开发中，敬请期待！',
+        // 'type': type,
+      })
+    } else {
+      Taro.navigateTo({
+        url: '/pages/register/index'
+      })
+    }
+  }
+
+  render() {
     return (
-      <View className='index'>
-        <Text>Hello world!</Text>
-        <AtButton type='primary'>I need Taro UI</AtButton>
-        <Text>Taro UI 支持 Vue 了吗？</Text>
-        <AtButton type='primary' circle={true}>支持</AtButton>
-        <Text>共建？</Text>
-        <AtButton type='secondary' circle={true}>来</AtButton>
+      <View className='index-page'>
+        <AtModal isOpened className="common-dialog identity-dialog">
+          {/* <AtModalHeader>标题</AtModalHeader> */}
+          <AtModalContent>
+            请选择您的身份
+          </AtModalContent>
+          <AtModalAction>
+            <Button onClick={this.handleSelect.bind(this, 'disease')}>我是患者</Button>
+            <Button onClick={this.handleSelect.bind(this, 'server')}>我是护工</Button>
+          </AtModalAction>
+        </AtModal>
+        <AtMessage />
       </View>
     )
   }

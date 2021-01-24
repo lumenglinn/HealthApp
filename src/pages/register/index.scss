@@ -4,14 +4,14 @@
   flex-direction: column;
   width: 100%;
   padding-bottom: 60px;
-  background-color: $mainTheme;
+  background-color: $color-brand;
   .bg-img {
     width: 100%;
     display:block;
   }
   .info-list {
     padding-top: 80px;
-    padding-bottom: 120px;
+    padding-bottom: 60px;
     .info-item {
       margin: 30px;
       padding: 0 20px;
@@ -61,7 +61,12 @@
     font-size: 32px;
     text-align: center;
     background-color: #fff;
-    color: $mainTheme;
+    color: $color-brand;
     border-radius: 8px;
+  }
+  .protocol-box {
+    padding: 0 60px 20px;
+    font-size: 28px;
+    color: #ffffff;
   }
 }

@@ -1,0 +1,18 @@
+@import "../../assets/scss/function.scss";
+@import "taro-ui/dist/style/components/button.scss";
+@import "taro-ui/dist/style/components/modal.scss";
+@import "taro-ui/dist/style/components/message.scss";
+
+.index-page {
+  .common-dialog {
+
+  }
+  .identity-dialog {
+    .at-modal__content {
+      padding: 62rpx 24rpx 0;
+      min-height: 98rpx;
+      text-align: center;
+      font-size: 34rpx;
+    }
+  }
+}

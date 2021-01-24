@@ -8,7 +8,7 @@ export interface queryHospitalParamsType {
 // 查询医院列表
 export async function queryHospital(params: queryHospitalParamsType): Promise<any> {
   return request({
-    url: '/base/query/list/hospital', 
+    url: '/base/query/list/hospital',
     method: 'POST',
     data: params,
   });
@@ -17,7 +17,7 @@ export async function queryHospital(params: queryHospitalParamsType): Promise<an
 // 护工技能
 export async function querySkill(): Promise<any> {
   return request({
-    url: '/base/query/list/skill', 
+    url: '/base/query/list/skill',
     method: 'POST',
   });
 }

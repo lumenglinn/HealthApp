@@ -9,7 +9,7 @@ export default function request(options) {
   }
   return Taro.request({...options,
     // url: `http://hugong.chenshengbao.com${options.url}`,
-    url: `http://120.76.100.17:8888${options.url}`,
+    url: `https://hugong.chenshengbao.com${options.url}`,
     success:(res) => {
       // if (res.data.code === 401) {
       //   wx.login({

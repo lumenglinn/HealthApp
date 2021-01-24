@@ -1,14 +1,22 @@
 import React, { Component } from 'react'
-import Taro from '@tarojs/taro'
+import Taro, { setWifiList } from '@tarojs/taro'
 import { View, Button, Image, Text, Input, RadioGroup, Radio, Label, Checkbox, CheckboxGroup, Textarea } from '@tarojs/components'
-import { AtImagePicker, AtCheckbox } from 'taro-ui'
-import { queryHospital, querySkill, createWorker } from './service';
+import { AtImagePicker, AtRadio, AtCheckbox } from 'taro-ui'
+import { queryHospital, querySkill, createWorker, uploadPic } from './service';
+// import themeColor from '../../utils/constant';
 
 import "taro-ui/dist/style/components/flex.scss";
 import "taro-ui/dist/style/components/image-picker.scss";
 // import "taro-ui/dist/style/components/checkbox.scss";
+// import "taro-ui/dist/style/components/radio.scss";
+import "taro-ui/dist/style/components/icon.scss";
 import './index.scss'
 
+// 错误提示
+const toastError = msg => Taro.showToast({
+  title: msg,
+  icon: 'none',
+})
 export default class Index extends Component {
   state = {
     realName: '',
@@ -17,19 +25,22 @@ export default class Index extends Component {
     identity: '',
     telephone: '',
     language: '["普通话", "粤语"]',
+    languageOptions: [
+      {
+        value: "普通话",
+        label: "普通话",
+      }, {
+        value: "粤语",
+        label: "粤语"
+      }
+    ],
     hospitalOptions: [],
     hospitalIdList: [],
     skillOptions: [],
     skillIdList: [],
-    files: [{
-      url: 'https://storage.360buyimg.com/mtd/home/111543234387022.jpg',
-    },
-    {
-      url: 'https://storage.360buyimg.com/mtd/home/111543234387022.jpg',
-    },
-    {
-      url: 'https://storage.360buyimg.com/mtd/home/111543234387022.jpg',
-    }]
+    filesList: [],
+    introduce: '',
+    isAgree: true
   }
   componentWillMount() { }
 
@@ -44,6 +55,7 @@ export default class Index extends Component {
 
   componentDidHide() { }
 
+  // 查询所有医院
   queryHospitalList = async () => {
     const { data: { data, msg, statusCode } } = await queryHospital({
       city: "湛江市",
@@ -69,6 +81,7 @@ export default class Index extends Component {
     }
   }
 
+  // 查询所有技能
   querySkillList = async () => {
     const { data: { data, msg, statusCode } } = await querySkill();
     if (statusCode === '10001') {
@@ -91,8 +104,67 @@ export default class Index extends Component {
     }
   }
 
+  // 图片选择
+  handlePicChange = async (file, doType, index) => { // doType代表操作类型，移除图片和添加图片,index为移除图片时返回的图片下标
+    // 兼容taro ui bug
+    setTimeout(() => {
+      if (doType === 'add') {
+        this.uploadPic(file);
+      } else {
+        this.removePic(index);
+      }
+    }, 300);
+  }
+
+  // 删除图片
+  removePic = (index) => {
+    const { filesList } = this.state;
+    const list = [...filesList];
+    list.splice(index, 1);
+    this.setState({
+      filesList: list
+    })
+  }
+
+  // 上传图片
+  uploadPic = (file) => {
+    const self = this;
+    const { filesList } = this.state;
+    Taro.uploadFile({
+      url: 'https://hugong.chenshengbao.com/upload/pic', //仅为示例，非真实的接口地址
+      filePath: file[file.length - 1].url,
+      name: 'file',
+      formData: {
+        'user': 'test'
+      },
+      success(res) {
+        const result = JSON.parse(res.data);
+        if (result.statusCode === '10001') {
+          self.setState({
+            filesList: filesList.concat({ url: result.data })
+          })
+        } else {
+          Taro.showToast({
+            title: result.msg,
+            icon: 'none',
+          })
+        }
+      },
+      fail(res) {
+        Taro.showToast({
+          title: res.errMsg,
+          icon: 'none',
+        })
+      }
+    })
+  }
+
+  // 注册
   handleRegister = async () => {
-    const { realName, age, sex, identity, telephone, language, skillIdList, hospitalIdList } = this.state;
+    if (!this.validateData()) {
+      return;
+    }
+    const { realName, age, sex, identity, telephone, language, skillIdList, hospitalIdList, filesList, introduce } = this.state;
     const { data: { data, msg, statusCode } } = await createWorker({
       realName,
       age,
@@ -101,13 +173,18 @@ export default class Index extends Component {
       telephone,
       language,
       skillIdList,
-      hospitalIdList
+      hospitalIdList,
+      introduce,
+      picUrlDtoList: filesList
     });
     if (statusCode === '10001') {
-      Taro.showToast({
-        title: "注册成功",
-        icon: 'success',
+      Taro.navigateTo({
+        url: '/pages/result/index'
       })
+      // Taro.showToast({
+      //   title: "注册成功",
+      //   icon: 'success',
+      // })
     } else {
       Taro.showToast({
         title: msg,
@@ -116,10 +193,51 @@ export default class Index extends Component {
     }
   }
 
+  // 格式校验
+  validateData = () => {
+    const { realName, age, sex, identity, telephone, language, skillIdList, hospitalIdList, filesList, introduce, isAgree } = this.state;
+    if (!realName) {
+      toastError('请输入姓名！');
+      return false;
+    }
+    if (!age) {
+      toastError('请输入年龄！');
+      return false;
+    }
+    // if (!identity) {
+    //   toastError('请输入身份证号！');
+    //   return false;
+    // }
+    if (!telephone) {
+      toastError('请输入电话号码！');
+      return false;
+    }
+    if (telephone.length < 11) {
+      toastError('电话号码格式不正确！');
+      return false;
+    }
+    // if (!introduce) {
+    //   toastError('请输入个人介绍！');
+    //   return false;
+    // }
+    if (!isAgree) {
+      toastError('请先勾选协议！');
+      return false;
+    }
+    return true;
+  }
+
+  // 查看协议
+  handleJumpProtocol = () => {
+    Taro.navigateTo({
+      url: '/pages/registerProtocol/index'
+    })
+  }
+
   render() {
-    const { realName, age, sex, identity, telephone, language, skillOptions, hospitalOptions, skillIdList, hospitalIdList } = this.state;
+    const { realName, age, sex, identity, telephone, language, languageOptions, skillOptions, hospitalOptions, skillIdList, hospitalIdList, introduce, isAgree } = this.state;
     return (
-      <View className='register-page'>
+      <View className='register-page' >
         <View className="info-list">
           <View className='info-item'>
             <View className="at-row">
@@ -187,7 +305,8 @@ export default class Index extends Component {
                 <Input
                   value={telephone}
                   className="info-value"
-                  type='text'
+                  type='number'
+                  maxlength={11}
                   placeholder='请输入联系电话'
                   onInput={e => this.setState({ telephone: e.target.value })} /></View>
             </View>
@@ -196,6 +315,11 @@ export default class Index extends Component {
             <View className="at-row">
               <View className='at-col at-col-4 info-label'>掌握的语言</View>
               <View className='at-col at-col-8'>
+                {/* <AtCheckbox
+                  options={languageOptions}
+                  selectedList={JSON.parse(language)}
+                  onChange={(e, ...a) => console.log(e, a, 'aaa')}
+                /> */}
                 <CheckboxGroup onChange={e => this.setState({ language: JSON.stringify(e.target.value) })}>
                   <View className='checkbox-list'>
                     <View className="checkbox-list__item">
@@ -245,48 +369,35 @@ export default class Index extends Component {
               </View>
             </CheckboxGroup>
           </View>
-          {/* <View className='info-item'>
-            <View className="at-row">
-              <View className='at-col at-col-4 info-label'>您的姓名</View>
-              <View className='at-col at-col-8'>
-                <View className='checkbox-list'>
-                  {this.state.list.map((item, i) => {
-                    return (
-                      <View className="checkbox-list__item" key={`checkout_${i}`}>
-                        <Label className='checkbox-list__label' for={i} key={i}>
-                          <Checkbox className='checkbox-list__checkbox' color='#04a9f5' value={item.value} checked={item.checked}>{item.text}</Checkbox>
-                        </Label>
-                      </View>
-                    )
-                  })}
-                </View>
-              </View>
-            </View>
-          </View> */}
-          {/* <View className='info-item'>
-            <View className="at-row">
-              <View className='at-col at-col-4 info-label'>自我介绍</View>
-              <View className='at-col at-col-8'>
-                <Textarea className="my-textarea" />
-              </View>
-            </View>
-          </View>
           <View className='info-item'>
             <View className="at-row ">
               <View className='at-col at-col-4 info-label'>上传生活照</View>
               <View className='at-col at-col-8'>
                 <View className="upload-files">
                   <AtImagePicker
-                    files={this.state.files}
-                    onChange={() => { }}
+                    files={this.state.filesList}
+                    onChange={this.handlePicChange}
+                    multiple={false}
                   />
                 </View>
               </View>
             </View>
-          </View> */}
+          </View>
+          <View className='info-item'>
+            <View className="at-row">
+              <View className='at-col at-col-4 info-label'>自我介绍</View>
+              <View className='at-col at-col-8'>
+                <Textarea className="my-textarea" value={introduce} onInput={e => this.setState({ introduce: e.detail.value })} />
+              </View>
+            </View>
+          </View>
+        </View>
+        <View className="protocol-box" >
+          <CheckboxGroup onChange={() => this.setState({ isAgree: !isAgree })}>
+            <Checkbox color='#04a9f5' checked={isAgree} value={'选择'} >点击提交报名，即表示您已阅读并同意</Checkbox><Text onClick={this.handleJumpProtocol}>《一键科技服务平台注册协议》</Text>
+          </CheckboxGroup>
         </View>
         <View className="btn-register" onClick={this.handleRegister}>马上申请</View>
-        {/* <Image src="http://www.1haohg.com/images/recruit_btn_3.png" mode="widthFix" className="bg-img" /> */}
       </View>
     )
   }
