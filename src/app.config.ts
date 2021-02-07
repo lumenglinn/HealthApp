@@ -1,5 +1,6 @@
 export default {
   pages: [
+    'pages/workerDetail/index',
     'pages/index/index',
     'pages/register/index',
     'pages/result/index',

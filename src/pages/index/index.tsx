@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { AtButton, AtModal, AtModalHeader, AtModalContent, AtModalAction, AtMessage } from 'taro-ui'
-
+import List from './components/List'
 import './index.scss'
 
 export default class Index extends Component {
@@ -33,8 +33,7 @@ export default class Index extends Component {
   render() {
     return (
       <View className='index-page'>
-        <AtModal isOpened className="common-dialog identity-dialog">
-          {/* <AtModalHeader>标题</AtModalHeader> */}
+        {/* <AtModal isOpened className="common-dialog identity-dialog">
           <AtModalContent>
             请选择您的身份
           </AtModalContent>
@@ -42,7 +41,8 @@ export default class Index extends Component {
             <Button onClick={this.handleSelect.bind(this, 'disease')}>我是患者</Button>
             <Button onClick={this.handleSelect.bind(this, 'server')}>我是护工</Button>
           </AtModalAction>
-        </AtModal>
+        </AtModal> */}
+        <List />
         <AtMessage />
       </View>
     )
