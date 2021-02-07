@@ -1,0 +1,87 @@
+.worker-detail-page {
+  padding-bottom: 60px;
+  background-color: #fff;
+  // background-color: #f5f5f9;
+  .banner-card {
+    background-color: #fff;
+  }
+  .banner {
+    width: 660px;
+    margin: 20px auto;
+    padding: 40px 20px;
+    display: flex;
+    box-shadow: 0 0 20px rgba(0,0,0,.2);
+    border-radius: 10px;
+    &-left {
+      width: 180px;
+      text-align: center;
+    }
+    .worker-header {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+    }
+    &-right {
+      padding-left: 20px;
+    }
+    .worker-name {
+      font-size: 32px;
+    }
+    .worker-info {
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+    .certificate {
+      display: flex;
+      font-size: 24px;
+      .cert-item {
+        margin-right: 10px;
+      }
+      .icon {
+        display: inline-block;
+        margin-right: 2px;
+        padding: 2px 4px;
+        border-radius: 4px;
+        background-color: #36bc9b;
+        color: #fff;
+        font-size: 20px;
+      }
+    }
+  }
+
+  .detail-card {
+    padding: 20px 30px;
+    background-color: #fff;
+    .detail-title {
+      color: #333;
+      font-size: 32px;
+      font-weight: bold;
+      margin-top: 40px;
+      margin-bottom: 30px;
+    }
+    .exper-list {
+      display: flex;
+      flex-wrap: wrap;
+      .item {
+        background: #fff;
+        color: #63b19e;
+        border-radius: 12px;
+        display: inline-block;
+        line-height: 32px;
+        padding: 6px 10px;
+        margin: 6px 8px;
+        font-size: 24px;
+        border: 1px solid #e1f0ec;
+      }
+    }
+    .lifes {
+      display: flex;
+      .worker-header {
+        width: 200px;
+        &+.worker-header {
+          margin-left: 20px;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+
+.protocol-page {
+    padding: 0 20px 20px;
+    // width: 100%;
+    // min-height: 100vh;
+    font-size: 28px;
+    line-height: 40px;
+
+    view {
+        padding: 10px;
+    }
+    .text-right {
+        padding: 0px;
+        text-align: right;
+    }
+}
