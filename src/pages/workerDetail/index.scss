@@ -1,3 +1,5 @@
+@import "../../assets/scss/function.scss";
+
 .worker-detail-page {
   padding-bottom: 60px;
   background-color: #fff;
@@ -10,7 +12,7 @@
     margin: 20px auto;
     padding: 40px 20px;
     display: flex;
-    box-shadow: 0 0 20px rgba(0,0,0,.2);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     &-left {
       width: 180px;
@@ -30,6 +32,15 @@
     .worker-info {
       padding-top: 6px;
       padding-bottom: 6px;
+      .language-icon {
+        margin: 0 6px;
+        padding: 2px 6px;
+        font-size: 24px;
+        line-height: 24px;
+        color: #fff;
+        border-radius: 8px;
+        background-color: $color-brand-light;
+      }
     }
     .certificate {
       display: flex;
@@ -64,21 +75,21 @@
       flex-wrap: wrap;
       .item {
         background: #fff;
-        color: #63b19e;
+        color: $color-brand-light;
         border-radius: 12px;
         display: inline-block;
         line-height: 32px;
         padding: 6px 10px;
         margin: 6px 8px;
         font-size: 24px;
-        border: 1px solid #e1f0ec;
+        border: 1px solid $color-brand-light;
       }
     }
     .lifes {
       display: flex;
       .worker-header {
         width: 200px;
-        &+.worker-header {
+        & + .worker-header {
           margin-left: 20px;
         }
       }

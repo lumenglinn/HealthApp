@@ -1,7 +1,7 @@
 export default {
   pages: [
-    'pages/workerDetail/index',
     'pages/index/index',
+    'pages/workerDetail/index',
     'pages/register/index',
     'pages/result/index',
     'pages/registerProtocol/index',

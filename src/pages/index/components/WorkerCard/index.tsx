@@ -1,35 +1,19 @@
 import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
 // import { connect } from 'src/pages/index/components/WorkerCard/node_modules/react-redux'
 import { View, Image, Text } from '@tarojs/components'
 
 // import { add, minus, asyncAdd } from '../../actions/counter'
 // import { AtButton } from 'src/pages/index/components/WorkerCard/node_modules/taro-ui'
-import { queryServerList } from '../../service';
 import './index.scss'
 
 
 class WorkerCard extends Component {
 
-  queryServerList = async () => {
-    const { data: { data, msg, statusCode, totalSize } } = await queryServerList({
-      pageSize: 20,
-      pageNum: 1,
-      onlineStatus: "offLine",
-      reviewStatus: "notReviewed"
-    });
-    if (statusCode === '10001') {
-      this.setState({
-        serverList: data,
-        totalSize,
-        // onlineStatus: "onLine",
-      })
-
-    } else {
-      Taro.showToast({
-        title: msg,
-        icon: 'none',
-      })
-    }
+  jumpToDetail = (data) => {
+    Taro.navigateTo({
+      url: `/pages/workerDetail/index?serverId=${data.serverId}`
+    })
   }
 
   render() {
@@ -37,7 +21,7 @@ class WorkerCard extends Component {
     const { realName, age, language, skillItemList = [], serverNum, sex } = data;
 
     return (
-      <View className='index-workerCard'>
+      <View className='index-workerCard' onClick={this.jumpToDetail.bind(this, data)}>
         <View className="card-left">
           <Image className="worker-header" src="http://www.1haohg.com/api/uploads/head/201805/20180514/1526278622MsSu1Cxk51.jpeg" />
           <View>服务范围：</View>

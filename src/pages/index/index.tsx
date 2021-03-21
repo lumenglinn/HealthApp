@@ -33,7 +33,7 @@ export default class Index extends Component {
   render() {
     return (
       <View className='index-page'>
-        {/* <AtModal isOpened className="common-dialog identity-dialog">
+        <AtModal isOpened className="common-dialog identity-dialog">
           <AtModalContent>
             请选择您的身份
           </AtModalContent>
@@ -41,8 +41,8 @@ export default class Index extends Component {
             <Button onClick={this.handleSelect.bind(this, 'disease')}>我是患者</Button>
             <Button onClick={this.handleSelect.bind(this, 'server')}>我是护工</Button>
           </AtModalAction>
-        </AtModal> */}
-        <List />
+        </AtModal>
+        {/* <List /> */}
         <AtMessage />
       </View>
     )

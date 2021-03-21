@@ -8,7 +8,7 @@ export interface queryServerParamsType {
 // 护工列表
 export async function queryServer(params: queryServerParamsType): Promise<any> {
   return request({
-    url: '/api/pc/server/query/server',
+    url: '/pc/server/query/server',
     method: 'POST',
     data: params,
   });
