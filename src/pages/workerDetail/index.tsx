@@ -33,7 +33,7 @@ class WorkerDetail extends Component {
     const { data: { data, msg, statusCode } } = await queryServer({
       serverId: getCurrentInstance().router.params.serverId
     });
-    if (statusCode === '10001') {
+    if (statusCode === '1') {
       this.setState({
         serverInfo: data,
       })
@@ -54,7 +54,7 @@ class WorkerDetail extends Component {
           <View className="banner">
             <View className="banner-left">
               <Image className="worker-header" src={fileVoList[0]?.url} />
-              <View className="btnn-collect">收藏</View>
+              {/* <View className="btnn-collect">收藏</View> */}
             </View>
             <View className="banner-right">
               <View className="worker-name">{realName}</View>

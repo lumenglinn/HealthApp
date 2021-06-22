@@ -61,7 +61,7 @@ export default class Index extends Component {
       city: "湛江市",
       area: "霞山区"
     })
-    if (statusCode === '10001') {
+    if (statusCode === '1') {
       const options = data.map((item: any) => {
         return {
           text: item.name,
@@ -84,7 +84,7 @@ export default class Index extends Component {
   // 查询所有技能
   querySkillList = async () => {
     const { data: { data, msg, statusCode } } = await querySkill();
-    if (statusCode === '10001') {
+    if (statusCode === '1') {
       const options = data.map((item: any) => {
         return {
           text: item.itemName,
@@ -139,7 +139,7 @@ export default class Index extends Component {
       },
       success(res) {
         const result = JSON.parse(res.data);
-        if (result.statusCode === '10001') {
+        if (result.statusCode === '1') {
           self.setState({
             filesList: filesList.concat({ url: result.data })
           })
@@ -177,7 +177,7 @@ export default class Index extends Component {
       introduce,
       picUrlDtoList: filesList
     });
-    if (statusCode === '10001') {
+    if (statusCode === '1') {
       Taro.navigateTo({
         url: '/pages/result/index'
       })

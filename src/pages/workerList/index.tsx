@@ -1,22 +1,20 @@
 import React, { Component } from 'react'
 import { View, ScrollView, Text } from '@tarojs/components'
-import WorkerCard from '../WorkerCard'
-// import { add, minus, asyncAdd } from '../../actions/counter'
-import { queryServerList } from '../../service';
-import { AtButton } from 'taro-ui'
+import WorkerCard from './components/WorkerCard'
+import { queryServerList } from './service';
 import './index.scss'
 
-class List extends Component {
+class WorkerList extends Component {
   state = {
     serverList: [],
     pageNum: 1,
     totalSize: 99999,
   }
   componentDidMount() {
-    this.queryServerList();
+    this.getServerList();
   }
 
-  queryServerList = async () => {
+  getServerList = async () => {
     const { data: { data, msg, statusCode, totalSize } } = await queryServerList({
       pageSize: 10,
       pageNum: this.state.pageNum,
@@ -42,12 +40,12 @@ class List extends Component {
   render() {
     const { serverList } = this.state;
     return (
-      <View className='index-list'>
+      <View className='worker-list-page'>
         <ScrollView
           className='scrollview'
           scrollY
           scrollWithAnimation
-          onScrollToLower={this.queryServerList.bind(this)} // 使用箭头函数的时候 可以这样写 `onScrollToUpper={this.onScrollToUpper}`
+          onScrollToLower={this.getServerList.bind(this)} // 使用箭头函数的时候 可以这样写 `onScrollToUpper={this.onScrollToUpper}`
         >
           {
             serverList.map((item, i) => {
@@ -61,5 +59,5 @@ class List extends Component {
   }
 }
 
-export default List
+export default WorkerList
 

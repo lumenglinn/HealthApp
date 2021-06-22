@@ -1,0 +1,55 @@
+@import "../../../../assets/scss/function.scss";
+
+.worker-list-page .index-workerCard {
+  display: flex;
+  background-color: #fff;
+  margin-top: 24px;
+  .card-left {
+    padding: 30px 30px 0;
+    width: 200px;
+    text-align: center;
+    .worker-header {
+      width: 140px;
+      height: 140px;
+      margin-bottom: 24px;
+      margin-right: 30px;
+      margin-left: 20px;
+      border-radius: 50%;
+    }
+    .tags {
+      display: flex;
+    }
+  }
+  .card-right {
+    width: 550px;
+    padding: 30px 0;
+
+    .worker-name {
+      font-size: 34px;
+      // font-weight: bold;
+    }
+    .worker-intro {
+      padding-top: 16px;
+      padding-bottom: 14px;
+      line-height: 48px;
+    }
+
+    .tags {
+      padding-top: 14px;
+      border-top: 1px solid #e6e6e6;
+      font-size: 24px;
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .tag {
+      margin: 6px 8px 6px 0;
+      padding: 4px 8px;
+      border: 1px solid $color-brand-light;
+      border-radius: 10px;
+      color: $color-brand-light;
+    }
+  }
+  // &.index-workerCard {
+  //   margin-top: 24px;
+  // }
+}

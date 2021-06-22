@@ -1,16 +1,19 @@
 
 import Taro from '@tarojs/taro';
 // import { getAccessToken } from '../services/global'
- 
+
 export default function request(options) {
+
   options.header = {
     ...options.header,
+    token: Taro.getStorageSync('token') || '',
     sessionId: Taro.getStorageSync('sessionId')
   }
-  return Taro.request({...options,
+  return Taro.request({
+    ...options,
     // url: `http://hugong.chenshengbao.com${options.url}`,
     url: `https://hugong.chenshengbao.com${options.url}`,
-    success:(res) => {
+    success: (res) => {
       // if (res.data.code === 401) {
       //   wx.login({
       //     success(res) {
@@ -29,7 +32,6 @@ export default function request(options) {
     }
   })
 }
-
 
 // export default function(options) {
 //   return Taro.request(options).then((res) => {
