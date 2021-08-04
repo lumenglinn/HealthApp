@@ -1,60 +1,41 @@
 import React, { Component } from 'react'
-import Taro from '@tarojs/taro'
-import { View, Text, Button } from '@tarojs/components'
-import { AtButton, AtModal, AtModalHeader, AtModalContent, AtModalAction, AtMessage } from 'taro-ui'
-import List from './components/List'
-import { login, queryUserInfo } from './service'
+import { View, ScrollView, Text, Image } from '@tarojs/components'
+import WorkerCard from './components/WorkerCard'
+import { queryServerList } from './service';
+import noDataImg from '../../assets/image/no-data.png';
 import './index.scss'
 
-export default class Index extends Component {
+class WorkerList extends Component {
   state = {
-    identity: ''
-  }
-  componentWillMount() { }
-
-  componentDidMount() {
-    this.getToken()
+    serverList: [],
+    pageNum: 1,
+    totalSize: 99999,
   }
 
-  componentWillUnmount() { }
-
-  componentDidShow() { }
-
-  componentDidHide() { }
-
-  getToken = () => {
-    const self = this
-    wx.login({
-      success: async function (res) {
-        if (res.code) {
-          const { data: { data, msg, statusCode } } = await login({
-            code: res.code
-          });
-          if (statusCode === '1') {
-            Taro.setStorageSync('token', data.token)
-            self.getUserInfo()
-          } else {
-            Taro.showToast({
-              title: msg,
-              icon: 'none',
-            })
-          }
-        } else {
-          console.log('获取用户登录态失败：' + res.errMsg);
-        }
-      }
-    })
+  componentDidShow() {
+    this.setState({ pageNum: 1 })
+    this.getServerList();
   }
 
-  getUserInfo = async () => {
-    const { data: { data, msg, statusCode } } = await queryUserInfo()
+  getServerList = async () => {
+    const { serverList, pageNum } = this.state
+    if (this.state.totalSize <= serverList.length) {
+      return
+    }
+    const { data: { data, msg, statusCode, totalSize } } = await queryServerList({
+      pageSize: 10,
+      pageNum: pageNum,
+      onlineStatus: "onLine",
+      reviewStatus: "reviewed"
+    });
     if (statusCode === '1') {
       this.setState({
-        identity: data.identity
+        serverList: pageNum === 1 ? data : serverList.concat(data),
+        totalSize,
+        pageNum: pageNum + 1
+        // onlineStatus: "onLine",
       })
-      data.identity === 'server' && Taro.navigateTo({
-        url: '/pages/workerList/index'
-      })
+
     } else {
       Taro.showToast({
         title: msg,
@@ -63,37 +44,35 @@ export default class Index extends Component {
     }
   }
 
-  // handleSelect = (type) => {
-  //   if (type === 'disease') {
-  //     Taro.atMessage({
-  //       'message': '该功能尚在开发中，敬请期待！',
-  //       // 'type': type,
-  //     })
-  //   } else {
-  //     Taro.navigateTo({
-  //       url: '/pages/register/index'
-  //     })
-  //   }
-  // }
-
   render() {
-    const { identity } = this.state
+    const { serverList, totalSize } = this.state;
     return (
-      <View className='index-page'>
-        {/* <List /> */}
-        {/* {
-          identity !== 'server' && <AtModal isOpened className="common-dialog identity-dialog">
-            <AtModalContent>
-              请选择您的身份
-          </AtModalContent>
-            <AtModalAction>
-              <Button onClick={this.handleSelect.bind(this, 'disease')}>我是患者</Button>
-              <Button onClick={this.handleSelect.bind(this, 'server')}>我是护工</Button>
-            </AtModalAction>
-          </AtModal>
-        } */}
-        <AtMessage />
+      <View className='worker-list-page'>
+        <ScrollView
+          className='scrollview'
+          scrollY
+          style='height:100%;'
+          scrollWithAnimation
+          onScrollToLower={this.getServerList.bind(this)} // 使用箭头函数的时候 可以这样写 `onScrollToUpper={this.onScrollToUpper}`
+        >
+          {
+            serverList.length > 0 && serverList.map((item, i) => {
+              return <WorkerCard data={item} key={`worker_${i}`} />
+            })
+          }
+          {
+            serverList.length === 0 && <View className='no-data'>
+              <Image src={noDataImg} className='no-data-img' />
+              <view>暂无数据</view>
+            </View>
+          }
+
+          {serverList.length > 0 && serverList.length === totalSize && <View className='no-more'>没有更多数据了</View>}
+        </ScrollView>
       </View>
     )
   }
 }
+
+export default WorkerList
+

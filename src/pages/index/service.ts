@@ -1,22 +1,15 @@
 import request from '../../utils/request';
-export interface loginParamsType {
-  code: string;
+
+export interface queryServerListParamsType {
+  // city: string;
+  // area: string;
 }
 
-// 登录
-export async function login(params: loginParamsType): Promise<any> {
+// 护工列表
+export async function queryServerList(params: queryServerListParamsType): Promise<any> {
   return request({
-    url: '/base/login',
+    url: '/pc/server/query/server/list',
     method: 'POST',
     data: params,
-  });
-}
-
-// 查询用户信息
-export async function queryUserInfo(): Promise<any> {
-  return request({
-    url: '/base/query/userInfo',
-    method: 'POST',
-    // data: params,
   });
 }

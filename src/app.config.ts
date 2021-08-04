@@ -1,10 +1,11 @@
 export default {
   pages: [
-    'pages/workerList/index',
+    'pages/index/index',
+    // 'pages/workerList/index',
     'pages/workerDetail/index',
     'pages/register/index',
-    // 'pages/index/index',
     'pages/result/index',
+    'pages/mine/index',
     'pages/registerProtocol/index',
   ],
   tabBar: {
@@ -12,13 +13,13 @@ export default {
       {
         'iconPath': './assets/image/tabBar/list.png',
         'selectedIconPath': './assets/image/tabBar/list-active.png',
-        pagePath: 'pages/workerList/index',
+        pagePath: 'pages/index/index',
         text: '首页'
       },
       {
         'iconPath': './assets/image/tabBar/mine.png',
         'selectedIconPath': './assets/image/tabBar/mine-active.png',
-        pagePath: 'pages/register/index',
+        pagePath: 'pages/mine/index',
         text: '我'
       }],
     'color': '#000',

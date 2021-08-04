@@ -23,7 +23,7 @@ class WorkerCard extends Component {
     return (
       <View className='index-workerCard' onClick={this.jumpToDetail.bind(this, data)}>
         <View className="card-left">
-          <Image className="worker-header" src="http://www.1haohg.com/api/uploads/head/201805/20180514/1526278622MsSu1Cxk51.jpeg" />
+          <Image className="worker-header" src="https://haohugongtest.yukangpeng.com/pic/1626797901125.jpg" />
           <View>服务范围：</View>
         </View>
         <View className="card-right">

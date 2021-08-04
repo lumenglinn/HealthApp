@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import Taro, { setWifiList } from '@tarojs/taro'
+import Taro, { setWifiList, getCurrentInstance } from '@tarojs/taro'
+import { connect } from 'react-redux';
 import { View, Button, Image, Text, Input, RadioGroup, Radio, Label, Checkbox, CheckboxGroup, Textarea } from '@tarojs/components'
 import { AtImagePicker, AtRadio, AtCheckbox } from 'taro-ui'
-import { queryHospital, querySkill, createWorker, uploadPic } from './service';
+import { queryWorker, queryHospital, querySkill, createWorker, updateWorker, uploadPic } from './service';
 // import themeColor from '../../utils/constant';
 
 import "taro-ui/dist/style/components/flex.scss";
@@ -11,14 +12,20 @@ import "taro-ui/dist/style/components/image-picker.scss";
 // import "taro-ui/dist/style/components/radio.scss";
 import "taro-ui/dist/style/components/icon.scss";
 import './index.scss'
+import { wxLogin } from '../../utils/function'
 
 // 错误提示
 const toastError = msg => Taro.showToast({
   title: msg,
   icon: 'none',
 })
-export default class Index extends Component {
+
+@connect(({ global }) => ({
+  ...global,
+}))
+export default class Register extends Component {
   state = {
+    serverId: null,
     realName: '',
     age: '',
     sex: 'woman',
@@ -45,8 +52,14 @@ export default class Index extends Component {
   componentWillMount() { }
 
   componentDidMount() {
-    this.queryHospitalList();
-    this.querySkillList();
+    const { userInfo } = this.props
+    const isUpdate = userInfo.identity === 'server'
+    if (isUpdate) {
+      this.queryServerDetail()
+    } else {
+      this.queryHospitalList();
+      this.querySkillList();
+    }
   }
 
   componentWillUnmount() { }
@@ -55,24 +68,76 @@ export default class Index extends Component {
 
   componentDidHide() { }
 
+  // 反显护工信息
+  queryServerDetail = async () => {
+    const { serverId } = getCurrentInstance().router.params
+    if (!serverId) {
+      return
+    }
+    const { data: { data, msg, statusCode } } = await queryWorker({ serverId });
+    if (statusCode === '1') {
+      const {
+        realName,
+        age,
+        sex,
+        identity,
+        telephone,
+        language,
+        skillItemList,
+        hospitalList,
+        introduce,
+        fileVoList
+      } = data
+      this.setState({
+        serverId,
+        realName,
+        age,
+        sex,
+        identity,
+        telephone,
+        language,
+        skillIdList: skillItemList.map(e => e.skillId),
+        hospitalIdList: hospitalList.map(e => e.hospitalId),
+        introduce: introduce || '',
+        filesList: fileVoList
+      })
+      this.queryHospitalList();
+      this.querySkillList();
+    } else {
+      Taro.showToast({
+        title: msg,
+        icon: 'none',
+      })
+    }
+  }
+
   // 查询所有医院
   queryHospitalList = async () => {
+    const { userInfo } = this.props
+    const { hospitalIdList } = this.state
+    const isUpdate = userInfo.identity === 'server'
     const { data: { data, msg, statusCode } } = await queryHospital({
       city: "湛江市",
-      area: "霞山区"
+      // area: "霞山区"
     })
     if (statusCode === '1') {
       const options = data.map((item: any) => {
         return {
           text: item.name,
           value: item.hospitalId,
-          checked: true
+          checked: isUpdate ? hospitalIdList.includes(item.hospitalId) : true
         }
       });
-      this.setState({
-        hospitalOptions: options,
-        hospitalIdList: data.map(e => e.hospitalId)
-      })
+      if (isUpdate) {
+        this.setState({
+          hospitalOptions: options,
+        })
+      } else {
+        this.setState({
+          hospitalOptions: options,
+          hospitalIdList: data.map(e => e.hospitalId)
+        })
+      }
     } else {
       Taro.showToast({
         title: msg,
@@ -83,19 +148,28 @@ export default class Index extends Component {
 
   // 查询所有技能
   querySkillList = async () => {
+    const { userInfo } = this.props
+    const { skillIdList } = this.state
+    const isUpdate = userInfo.identity === 'server'
     const { data: { data, msg, statusCode } } = await querySkill();
     if (statusCode === '1') {
       const options = data.map((item: any) => {
         return {
           text: item.itemName,
           value: item.skillId,
-          checked: true
+          checked: isUpdate ? skillIdList.includes(item.skillId) : true
         }
       });
-      this.setState({
-        skillOptions: options,
-        skillIdList: data.map(e => e.skillId)
-      })
+      if (isUpdate) {
+        this.setState({
+          skillOptions: options
+        })
+      } else {
+        this.setState({
+          skillOptions: options,
+          skillIdList: data.map(e => e.skillId)
+        })
+      }
     } else {
       Taro.showToast({
         title: msg,
@@ -131,7 +205,7 @@ export default class Index extends Component {
     const self = this;
     const { filesList } = this.state;
     Taro.uploadFile({
-      url: 'https://hugong.chenshengbao.com/upload/pic', //仅为示例，非真实的接口地址
+      url: 'https://haohugongpro.yukangpeng.com/upload/pic', //仅为示例，非真实的接口地址
       filePath: file[file.length - 1].url,
       name: 'file',
       formData: {
@@ -159,13 +233,23 @@ export default class Index extends Component {
     })
   }
 
+  handleSubmit = () => {
+    const { userInfo } = this.props
+    const isUpdate = userInfo.identity === 'server'
+    if (isUpdate) {
+      this.handleUpdate()
+    } else {
+      this.handleRegister()
+    }
+  }
   // 注册
   handleRegister = async () => {
     if (!this.validateData()) {
       return;
     }
+    const { dispatch } = this.props;
     const { realName, age, sex, identity, telephone, language, skillIdList, hospitalIdList, filesList, introduce } = this.state;
-    const { data: { data, msg, statusCode } } = await createWorker({
+    const params = {
       realName,
       age,
       sex,
@@ -175,16 +259,69 @@ export default class Index extends Component {
       skillIdList,
       hospitalIdList,
       introduce,
-      picUrlDtoList: filesList
-    });
+      picUrlDtoList: filesList,
+    }
+
+    const { data: { data, msg, statusCode } } = await createWorker(params);
     if (statusCode === '1') {
       Taro.navigateTo({
         url: '/pages/result/index'
       })
-      // Taro.showToast({
-      //   title: "注册成功",
-      //   icon: 'success',
-      // })
+      wxLogin(res => {
+        dispatch({
+          type: 'global/login',
+          payload: {
+            code: res
+          }
+        });
+      })
+    } else {
+      Taro.showToast({
+        title: msg,
+        icon: 'none',
+      })
+    }
+  }
+
+  // 更新
+  handleUpdate = async () => {
+    if (!this.validateData()) {
+      return;
+    }
+    const { dispatch } = this.props;
+    const { realName, age, sex, identity, telephone, language, skillIdList, hospitalIdList, filesList, introduce, serverId } = this.state;
+    const params = {
+      realName,
+      age,
+      sex,
+      identity,
+      telephone,
+      language,
+      skillIdList,
+      hospitalIdList,
+      introduce,
+      picUrlDtoList: filesList,
+      serverId
+    }
+    const { data: { data, msg, statusCode } } = await updateWorker(params);
+    if (statusCode === '1') {
+      Taro.showToast({
+        title: '更新信息成功',
+        icon: 'none',
+      })
+      wxLogin(res => {
+        dispatch({
+          type: 'global/login',
+          payload: {
+            code: res
+          }
+        });
+      })
+      setTimeout(() => {
+        wx.switchTab({
+          url: `/pages/index/index`
+        })
+      }, 2000);
     } else {
       Taro.showToast({
         title: msg,
@@ -196,6 +333,9 @@ export default class Index extends Component {
   // 格式校验
   validateData = () => {
     const { realName, age, sex, identity, telephone, language, skillIdList, hospitalIdList, filesList, introduce, isAgree } = this.state;
+    const { userInfo } = this.props
+    const isUpdate = userInfo.identity === 'server'
+
     if (!realName) {
       toastError('请输入姓名！');
       return false;
@@ -220,7 +360,7 @@ export default class Index extends Component {
     //   toastError('请输入个人介绍！');
     //   return false;
     // }
-    if (!isAgree) {
+    if (!isAgree && !isUpdate) {
       toastError('请先勾选协议！');
       return false;
     }
@@ -236,6 +376,9 @@ export default class Index extends Component {
 
   render() {
     const { realName, age, sex, identity, telephone, language, languageOptions, skillOptions, hospitalOptions, skillIdList, hospitalIdList, introduce, isAgree } = this.state;
+    const { userInfo } = this.props
+    const isUpdate = userInfo.identity === 'server'
+
     return (
       <View className='register-page' >
         <View className="info-list">
@@ -324,12 +467,12 @@ export default class Index extends Component {
                   <View className='checkbox-list'>
                     <View className="checkbox-list__item">
                       <Label className='checkbox-list__label' for={'普通话'} >
-                        <Checkbox className='checkbox-list__checkbox' color='#04a9f5' value={'普通话'} checked={true}>普通话</Checkbox>
+                        <Checkbox className='checkbox-list__checkbox' color='#04a9f5' value={'普通话'} checked={language.includes('普通话')}>普通话</Checkbox>
                       </Label>
                     </View>
                     <View className="checkbox-list__item">
                       <Label className='checkbox-list__label' for={'粤语'} >
-                        <Checkbox className='checkbox-list__checkbox' color='#04a9f5' value={'粤语'} checked={true}>粤语</Checkbox>
+                        <Checkbox className='checkbox-list__checkbox' color='#04a9f5' value={'粤语'} checked={language.includes('粤语')}>粤语</Checkbox>
                       </Label>
                     </View>
                   </View>
@@ -392,12 +535,14 @@ export default class Index extends Component {
             </View>
           </View>
         </View>
-        <View className="protocol-box" >
-          <CheckboxGroup onChange={() => this.setState({ isAgree: !isAgree })}>
-            <Checkbox color='#04a9f5' checked={isAgree} value={'选择'} >点击提交报名，即表示您已阅读并同意</Checkbox><Text onClick={this.handleJumpProtocol}>《一键科技服务平台注册协议》</Text>
-          </CheckboxGroup>
-        </View>
-        <View className="btn-register" onClick={this.handleRegister}>马上申请</View>
+        {
+          !isUpdate && <View className="protocol-box" >
+            <CheckboxGroup onChange={() => this.setState({ isAgree: !isAgree })}>
+              <Checkbox color='#04a9f5' checked={isAgree} value={'选择'} >点击提交报名，即表示您已阅读并同意</Checkbox><Text onClick={this.handleJumpProtocol}>《一键科技服务平台注册协议》</Text>
+            </CheckboxGroup>
+          </View>
+        }
+        <View className="btn-register" onClick={this.handleSubmit}>{isUpdate ? '提交保存' : '马上申请'}</View>
       </View>
     )
   }

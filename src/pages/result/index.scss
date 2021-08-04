@@ -1,11 +1,20 @@
+@import "../../assets/scss/function.scss";
 
 .result-page {
     padding-top: 40px;
     text-align: center;
-    
+
     .tips {
         padding-top: 40px;
         font-size: 40px;
         color: #333;
+    }
+    .btn-finish {
+        width: 300px;
+        line-height: 64px;
+        margin: 50px auto;
+        border-radius: 8px;
+        color: #fff;
+        background-color: $color-brand;
     }
 }
