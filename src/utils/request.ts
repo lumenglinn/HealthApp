@@ -11,8 +11,8 @@ export default function request(options) {
   }
   return Taro.request({
     ...options,
-    url: `https://haohugongpro.yukangpeng.com${options.url}`,
-    // url: `https://haohugongtest.yukangpeng.com${options.url}`,
+    // url: `https://haohugongpro.yukangpeng.com${options.url}`,
+    url: `https://haohugongtest.yukangpeng.com${options.url}`,
     success: (res) => {
       if (res.data.statusCode === '0') {
         userLogin(() => {

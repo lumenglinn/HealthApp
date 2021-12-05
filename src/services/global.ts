@@ -21,3 +21,18 @@ export async function queryUserInfo(): Promise<any> {
     // data: params,
   });
 }
+
+export interface queryTelephoneType {
+  encryptedData: string;
+  iv: string
+}
+
+
+// 查询用户信息
+export async function queryMineTelephone(params: queryTelephoneType): Promise<any> {
+  return request({
+    url: '/base/get/telephone',
+    method: 'POST',
+    data: params,
+  });
+}

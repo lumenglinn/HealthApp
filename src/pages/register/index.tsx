@@ -53,6 +53,9 @@ export default class Register extends Component {
 
   componentDidMount() {
     const { userInfo } = this.props
+    this.setState({
+      telephone: userInfo.telephone
+    })
     const isUpdate = userInfo.identity === 'server'
     if (isUpdate) {
       this.queryServerDetail()
@@ -205,7 +208,8 @@ export default class Register extends Component {
     const self = this;
     const { filesList } = this.state;
     Taro.uploadFile({
-      url: 'https://haohugongpro.yukangpeng.com/upload/pic', //仅为示例，非真实的接口地址
+      url: 'https://haohugongpro.yukangpeng.com/upload/pic',
+      // url: 'https://haohugongtest.yukangpeng.com/upload/pic',
       filePath: file[file.length - 1].url,
       name: 'file',
       formData: {
@@ -248,7 +252,7 @@ export default class Register extends Component {
       return;
     }
     const { dispatch } = this.props;
-    const { realName, age, sex, identity, telephone, language, skillIdList, hospitalIdList, filesList, introduce } = this.state;
+    const { realName, age, sex, telephone, identity, language, skillIdList, hospitalIdList, filesList, introduce } = this.state;
     const params = {
       realName,
       age,
@@ -289,6 +293,7 @@ export default class Register extends Component {
       return;
     }
     const { dispatch } = this.props;
+
     const { realName, age, sex, identity, telephone, language, skillIdList, hospitalIdList, filesList, introduce, serverId } = this.state;
     const params = {
       realName,
@@ -397,6 +402,22 @@ export default class Register extends Component {
           </View>
           <View className='info-item'>
             <View className="at-row">
+              <View className='at-col at-col-4 info-label'>您的联系电话</View>
+              <View className='at-col at-col-8 info-value text-grey'>
+                {/* {telephone} */}
+                <Input
+                  value={telephone}
+                  className="info-value"
+                  type='number'
+                  maxlength={11}
+                  placeholder='请输入联系电话'
+                  disabled
+                  onInput={e => this.setState({ telephone: e.target.value })} />
+              </View>
+            </View>
+          </View>
+          <View className='info-item'>
+            <View className="at-row">
               <View className='at-col at-col-4 info-label'>您的年龄</View>
               <View className='at-col at-col-8'>
                 <Input
@@ -439,19 +460,6 @@ export default class Register extends Component {
                   type='idcard'
                   placeholder='请输入身份证号'
                   onInput={e => this.setState({ identity: e.target.value })} /></View>
-            </View>
-          </View>
-          <View className='info-item'>
-            <View className="at-row">
-              <View className='at-col at-col-4 info-label'>您的联系电话</View>
-              <View className='at-col at-col-8'>
-                <Input
-                  value={telephone}
-                  className="info-value"
-                  type='number'
-                  maxlength={11}
-                  placeholder='请输入联系电话'
-                  onInput={e => this.setState({ telephone: e.target.value })} /></View>
             </View>
           </View>
           <View className='info-item'>

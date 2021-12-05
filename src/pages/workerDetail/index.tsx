@@ -53,7 +53,7 @@ class WorkerDetail extends Component {
         <View className="banner-card">
           <View className="banner">
             <View className="banner-left">
-              <Image className="worker-header" src={fileVoList[0]?.url || 'https://haohugongtest.yukangpeng.com/pic/1626797901125.jpg'} />
+              <Image mode="aspectFill" className="worker-header" src={fileVoList[0]?.url || 'https://haohugongtest.yukangpeng.com/pic/1626797901125.jpg'} />
               {/* <View className="btnn-collect">收藏</View> */}
             </View>
             <View className="banner-right">

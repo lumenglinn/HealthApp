@@ -3,7 +3,6 @@ import Taro from '@tarojs/taro'
 import { connect } from 'react-redux';
 import { View, Button } from '@tarojs/components'
 import { AtIcon, AtGrid } from 'taro-ui'
-import { getUserInfo } from '../../utils/function'
 import './index.scss'
 
 @connect(({ global }) => ({
@@ -18,8 +17,16 @@ export default class mine extends Component {
   componentDidShow() {
   }
 
-  toRegister = (e) => {
-    // console.log(e.detail.encryptedData)
+  toRegister = async (e) => {
+    const { dispatch } = this.props;
+    const res = await dispatch({
+      type: 'global/getUserPhone',
+      payload: e.detail
+    });
+    this.jumpRegister()
+  }
+
+  jumpRegister = () => {
     const { userInfo } = this.props
     Taro.navigateTo({
       url: `/pages/register/index${userInfo.identity === "server" ? '?serverId=' + userInfo.server.serverId : ''}`,
@@ -31,22 +38,29 @@ export default class mine extends Component {
     const isServer = userInfo.identity === "server"
     return (
       <View className='mine-page'>
-        <View className="user-wrap">
-          <View className="user-head">
-            <open-data type="userAvatarUrl" ></open-data>
+        <View className='user-wrap'>
+          <View className='user-head'>
+            <open-data type='userAvatarUrl' ></open-data>
           </View>
-          <View className="user-name">
-            <open-data type="userNickName" lang="zh_CN"></open-data>
+          <View className='user-name'>
+            <open-data type='userNickName' lang='zh_CN'></open-data>
           </View>
         </View>
-        <View className="myorder-wrap">
-          <View className="mine-title">我的服务</View>
-          <View className="myorder">
-            {/* openType='getPhoneNumber' onGetPhoneNumber={this.toRegister} */}
-            <Button className="order-item" onClick={this.toRegister}>
-              <AtIcon value='money' size='24' color='#333'></AtIcon>
-              <View>{isServer ? '修改护工信息' : '注册护工'}</View>
-            </Button>
+        <View className='myorder-wrap'>
+          <View className='mine-title'>我的服务</View>
+          <View className='myorder'>
+            {
+              !userInfo.telephone && <Button className='order-item' openType='getPhoneNumber' onGetPhoneNumber={this.toRegister} >
+                <AtIcon value='money' size='24' color='#333'></AtIcon>
+                <View>{isServer ? '修改护工信息' : '注册护工'}</View>
+              </Button>
+            }
+            {
+              !!userInfo.telephone && <Button className='order-item' onClick={this.jumpRegister} >
+                <AtIcon value='money' size='24' color='#333'></AtIcon>
+                <View>{isServer ? '修改护工信息' : '注册护工'}</View>
+              </Button>
+            }
             {/* <View className="order-item" onClick={this.toMyOrder}>
               <AtIcon value='shopping-bag' size='24' color='#333'></AtIcon>
               <View>代付款</View>

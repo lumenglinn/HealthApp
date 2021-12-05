@@ -1,6 +1,6 @@
 import Taro from '@tarojs/taro'
 import { wxLogin } from '../utils/function'
-import { login, queryUserInfo } from '../services/global'
+import { login, queryUserInfo, queryMineTelephone } from '../services/global'
 
 export default {
   namespace: 'global',
@@ -23,6 +23,7 @@ export default {
   },
 
   effects: {
+    // 登陆
     *login({ payload }, { call, put }) {
       const { data: { data, msg, statusCode } } = yield call(login, payload);
       if (statusCode === '1') {
@@ -43,13 +44,34 @@ export default {
         })
       }
     },
-    *getUserInfo({ payload }, { call, put }) {
+    // 获取用户信息
+    *getUserInfo({ payload }, { call, put, select }) {
       const { data: { data, msg, statusCode } } = yield call(queryUserInfo, payload);
+      const userInfo = yield select(state => state.userInfo);
       if (statusCode === '1') {
         yield put({
           type: 'updateData',
           payload: {
-            userInfo: data
+            userInfo: {
+              ...userInfo,
+              telephone: data.phoneNumber
+            }
+          }
+        });
+      }
+    },
+    // 获取手机号码
+    *getUserPhone({ payload }, { call, put, select }) {
+      const { data: { data, msg, statusCode } } = yield call(queryMineTelephone, payload);
+      const userInfo = yield select(state => state.userInfo);
+      if (statusCode === '1') {
+        yield put({
+          type: 'updateData',
+          payload: {
+            userInfo: {
+              ...userInfo,
+              telephone: data.phoneNumber
+            }
           }
         });
       }
