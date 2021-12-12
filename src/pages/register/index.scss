@@ -1,13 +1,13 @@
 @import "../../assets/scss/function.scss";
 
-.register-page{
+.register-page {
   flex-direction: column;
   width: 100%;
   padding-bottom: 60px;
   background-color: $color-brand;
   .bg-img {
     width: 100%;
-    display:block;
+    display: block;
   }
   .info-list {
     padding-top: 80px;

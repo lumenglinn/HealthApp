@@ -1,12 +1,8 @@
 @import "../../assets/scss/function.scss";
-@import "taro-ui/dist/style/components/button.scss";
-@import "taro-ui/dist/style/components/modal.scss";
-@import "taro-ui/dist/style/components/message.scss";
 
 .index-page {
   background-color: $bg-grey;
   .common-dialog {
-
   }
   .identity-dialog {
     .at-modal__content {

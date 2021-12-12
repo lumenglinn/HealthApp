@@ -6,6 +6,7 @@ page {
 }
 .worker-list-page {
   height: 100%;
+  // padding-top: 24px;
   background-color: $bg-grey;
   .no-data {
     height: 100%;
@@ -19,7 +20,16 @@ page {
     }
   }
   .no-more {
-    line-height: 60px;
+    line-height: 80px;
     text-align: center;
+    background-color: $bg-grey;
+  }
+  .top-wrap {
+    // margin-top: 24px;
+    padding: 0 0 18px;
+    background-color: #fff;
+    .btn {
+      width: 160px;
+    }
   }
 }

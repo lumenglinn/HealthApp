@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import themeColor from '../../utils/constant';
 import { AtIcon } from 'taro-ui'
-
-import "taro-ui/dist/style/components/icon.scss";
+import themeColor from '../../utils/constant';
 import './index.scss'
 // import { } from '../../components'
 

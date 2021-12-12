@@ -4,13 +4,7 @@ import { connect } from 'react-redux';
 import { View, Button, Image, Text, Input, RadioGroup, Radio, Label, Checkbox, CheckboxGroup, Textarea } from '@tarojs/components'
 import { AtImagePicker, AtRadio, AtCheckbox } from 'taro-ui'
 import { queryWorker, queryHospital, querySkill, createWorker, updateWorker, uploadPic } from './service';
-// import themeColor from '../../utils/constant';
 
-import "taro-ui/dist/style/components/flex.scss";
-import "taro-ui/dist/style/components/image-picker.scss";
-// import "taro-ui/dist/style/components/checkbox.scss";
-// import "taro-ui/dist/style/components/radio.scss";
-import "taro-ui/dist/style/components/icon.scss";
 import './index.scss'
 import { wxLogin } from '../../utils/function'
 
@@ -208,8 +202,8 @@ export default class Register extends Component {
     const self = this;
     const { filesList } = this.state;
     Taro.uploadFile({
-      url: 'https://haohugongpro.yukangpeng.com/upload/pic',
-      // url: 'https://haohugongtest.yukangpeng.com/upload/pic',
+      // url: 'https://haohugongpro.yukangpeng.com/upload/pic',
+      url: 'https://haohugongtest.yukangpeng.com/upload/pic',
       filePath: file[file.length - 1].url,
       name: 'file',
       formData: {

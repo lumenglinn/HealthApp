@@ -1,3 +1,12 @@
+$color-brand: #78c8ec;
+@import "taro-ui/dist/style/components/button.scss";
+@import "taro-ui/dist/style/components/noticebar.scss";
+@import "taro-ui/dist/style/components/flex.scss";
+@import "taro-ui/dist/style/components/image-picker.scss";
+@import "taro-ui/dist/style/components/icon.scss";
+@import "taro-ui/dist/style/components/modal.scss";
+@import "taro-ui/dist/style/components/message.scss";
+
 page {
   color: #333;
   font-size: 28rpx;
@@ -10,4 +19,12 @@ page {
 
 .text-grey {
   color: rgb(141, 140, 140);
+}
+
+.white-bg {
+  background-color: #fff;
+}
+
+.flex-box {
+  display: flex;
 }

@@ -1,5 +1,6 @@
 export default {
   pages: [
+    'pages/hospital/index',
     'pages/index/index',
     // 'pages/workerList/index',
     'pages/workerDetail/index',

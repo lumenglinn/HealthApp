@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
-import { View, ScrollView, Text, Image } from '@tarojs/components'
-import { AtNoticebar } from 'taro-ui'
+import { View, ScrollView, Button, Image } from '@tarojs/components'
+import { AtNoticebar, AtButton } from 'taro-ui'
 import WorkerCard from './components/WorkerCard'
 import { queryServerList } from './service';
-import "taro-ui/dist/style/components/noticebar.scss";
 import noDataImg from '../../assets/image/no-data.png';
 import './index.scss'
 
@@ -57,12 +56,21 @@ class WorkerList extends Component {
     }
   }
 
+  selectHospital = () => {
+
+  }
+
   render() {
     const { serverList, totalSize, loading } = this.state;
     return (
       <View className='worker-list-page'>
-        {/* marquee={true} */}
-        <AtNoticebar icon='volume-plus' >好护工平台目前正大力征集护工信息，稍后正式开放使用，敬请期待！</AtNoticebar>
+        <View className='top-wrap'>
+          <View className='flex-box'>
+            <AtButton type='secondary' size='small' className='btn' onClick={this.selectHospital}>选择医院</AtButton>
+            <AtButton type='secondary' size='small' className='btn'>筛选</AtButton>
+          </View>
+        </View>
+        {/* <AtNoticebar icon='volume-plus' >好护工平台目前正大力征集护工信息，稍后正式开放使用，敬请期待！</AtNoticebar> */}
         <ScrollView
           className='scrollview'
           scrollY
