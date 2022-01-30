@@ -6,6 +6,10 @@ $color-brand: #78c8ec;
 @import "taro-ui/dist/style/components/icon.scss";
 @import "taro-ui/dist/style/components/modal.scss";
 @import "taro-ui/dist/style/components/message.scss";
+@import "taro-ui/dist/style/components/drawer.scss";
+@import "taro-ui/dist/style/components/list.scss";
+@import "taro-ui/dist/style/components/checkbox.scss";
+@import "taro-ui/dist/style/components/toast.scss";
 
 page {
   color: #333;
@@ -27,4 +31,20 @@ page {
 
 .flex-box {
   display: flex;
+}
+
+.flex-around {
+  justify-content: space-around;
+}
+
+.no-data {
+  height: 100%;
+  text-align: center;
+  background-color: #fff;
+  .no-data-img {
+    padding-top: 200px;
+    width: 360px;
+    height: 360px;
+    margin: 0 auto;
+  }
 }

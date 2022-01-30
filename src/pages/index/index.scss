@@ -8,17 +8,7 @@ page {
   height: 100%;
   // padding-top: 24px;
   background-color: $bg-grey;
-  .no-data {
-    height: 100%;
-    text-align: center;
-    background-color: #fff;
-    .no-data-img {
-      padding-top: 200px;
-      width: 360px;
-      height: 360px;
-      margin: 0 auto;
-    }
-  }
+
   .no-more {
     line-height: 80px;
     text-align: center;
@@ -31,5 +21,40 @@ page {
     .btn {
       width: 160px;
     }
+  }
+  .at-checkbox__option + .at-checkbox__option .at-checkbox__option-wrap::after {
+    border-top-width: 0px;
+  }
+  .at-checkbox__icon-cnt {
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+  }
+  .at-checkbox__title {
+    font-size: 28px;
+  }
+  .at-checkbox {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .at-checkbox::before {
+    border-top-width: 0;
+  }
+  .at-checkbox::after {
+    border-bottom-width: 0;
+  }
+  .at-checkbox__option-wrap {
+    padding: 16rpx 32rpx 16rpx 0;
+  }
+  .drawer-item {
+    padding: 12px 0;
+    .item-title {
+      padding-left: 30px;
+      font-size: 32px;
+      font-weight: 700;
+    }
+  }
+  .btn {
+    margin: 20px 40px;
   }
 }

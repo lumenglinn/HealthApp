@@ -1,0 +1,30 @@
+@import "../../assets/scss/function.scss";
+.orderDetail-page {
+    // width: 100%;
+    min-height: 100vh;
+    padding: 24px;
+    // background-color: $bg-grey;
+    // .order-item {
+    //     margin-top: 24px;
+    //     padding: 24px;
+    //     background-color: #fff;
+    // }
+    .order-title {
+        padding-bottom: 10px;
+        font-weight: 700;
+    }
+    .worker-item {
+        display: flex;
+        padding: 24px 0;
+        border-bottom: 1px solid #ccc;
+    }
+    .worker-header {
+        width: 140px;
+        height: 140px;
+        margin-right: 50px;
+    }
+    .order-detail {
+        padding-top: 32px;
+        line-height: 46px;
+    }
+}

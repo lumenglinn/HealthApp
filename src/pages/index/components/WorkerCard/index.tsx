@@ -23,8 +23,8 @@ class WorkerCard extends Component {
     return (
       <View className='index-workerCard' onClick={this.jumpToDetail.bind(this, data)}>
         <View className='card-left'>
-          {/* <Image mode='aspectFill' className='worker-header' src={fileVoList[0]?.url || 'https://haohugongtest.yukangpeng.com/pic/1626797901125.jpg'} /> */}
-          <Image className='worker-header' src='https://haohugongtest.yukangpeng.com/pic/1626797901125.jpg' />
+          <Image mode='aspectFill' className='worker-header' src={fileVoList[0]?.url || 'https://haohugongtest.yukangpeng.com/pic/1626797901125.jpg'} />
+          {/* <Image className='worker-header' src='https://haohugongtest.yukangpeng.com/pic/1626797901125.jpg' /> */}
           <View>服务范围：</View>
         </View>
         <View className='card-right'>

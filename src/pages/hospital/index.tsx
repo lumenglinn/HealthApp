@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
 import Taro, { Config } from '@tarojs/taro'
 import { View, ScrollView, Icon } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
@@ -7,6 +8,9 @@ import { queryHospital } from './service';
 import { HospitalProps, HospitalState } from './hospital.interface'
 import './hospital.scss'
 
+@connect(({ global }) => ({
+  ...global,
+}))
 class Hospital extends Component<HospitalProps, HospitalState> {
   state = {
     hospitalList: [],
@@ -51,6 +55,23 @@ class Hospital extends Component<HospitalProps, HospitalState> {
     })
   }
 
+  submit = () => {
+
+    const { dispatch } = this.props
+    const { hospitalId } = this.state
+    console.log(hospitalId, 11)
+    dispatch({
+      type: 'global/updateData',
+      payload: {
+        hospitalId,
+      }
+    }, () => {
+      Taro.navigateTo({
+        url: `/pages/index/index`
+      })
+    });
+  }
+
   render() {
     const { hospitalList, hospitalId } = this.state
     return (
@@ -72,7 +93,7 @@ class Hospital extends Component<HospitalProps, HospitalState> {
               </View>
             })
           }
-          <AtButton type='primary' size='small' className='btn'>确定</AtButton>
+          <AtButton type='primary' size='small' className='btn' onClick={this.submit}>确定</AtButton>
         </ScrollView>
       </View>
     )

@@ -33,6 +33,13 @@ export default class mine extends Component {
     })
   }
 
+  jumpMyOrder = () => {
+    // const { userInfo } = this.props
+    Taro.navigateTo({
+      url: `/pages/orderList/index`,
+    })
+  }
+
   render() {
     const { userInfo } = this.props
     const isServer = userInfo.identity === "server"
@@ -61,11 +68,11 @@ export default class mine extends Component {
                 <View>{isServer ? '修改护工信息' : '注册护工'}</View>
               </Button>
             }
-            {/* <View className="order-item" onClick={this.toMyOrder}>
+            <View className='order-item' onClick={this.jumpMyOrder}>
               <AtIcon value='shopping-bag' size='24' color='#333'></AtIcon>
-              <View>代付款</View>
+              <View>我的订单</View>
             </View>
-            <View className="order-item" onClick={this.toMyOrder}>
+            {/* <View className="order-item" onClick={this.toMyOrder}>
               <AtIcon value='shopping-bag-2' size='24' color='#333'></AtIcon>
               <View>代付款</View>
             </View> */}

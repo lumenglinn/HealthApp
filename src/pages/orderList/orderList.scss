@@ -1,0 +1,29 @@
+@import "../../assets/scss/function.scss";
+.orderList-page {
+    width: 100%;
+    min-height: 100vh;
+    background-color: $bg-grey;
+    .order-item {
+        margin-top: 24px;
+        padding: 24px;
+        background-color: #fff;
+        .order-title {
+            padding-bottom: 10px;
+            font-weight: 700;
+        }
+        .worker-item {
+            display: flex;
+            &.worker-item {
+                margin-top: 24px;
+            }
+        }
+        .worker-header {
+            width: 140px;
+            height: 140px;
+            margin-right: 50px;
+        }
+        .order-detail {
+            text-align: right;
+        }
+    }
+}

@@ -6,7 +6,49 @@ export default {
   namespace: 'global',
 
   state: {
-    userInfo: {}
+    userInfo: {},
+    cartList: [{
+      "serverId": "1631030611623",
+      "userId": "1626621674078",
+      "realName": "张大龙",
+      "fileId": "0",
+      "state": null,
+      "remark": null,
+      "updateAt": "2021-09-14T15:00:03.000+0000",
+      "createAt": "2021-09-08 00:03:31",
+      "serverNum": "0",
+      "identity": "",
+      "introduce": null,
+      "reviewStatus": "reviewed",
+      "onlineStatus": "onLine",
+      "telephone": "18825182319",
+      "age": "23",
+      "sex": "woman",
+      "language": "[\"普通话\", \"粤语\"]",
+      "fileVoList": []
+    }, {
+      "serverId": "1631026190305",
+      "userId": "1626621674078",
+      "realName": "张小龙",
+      "fileId": "0",
+      "state": null,
+      "remark": null,
+      "updateAt": "2021-09-14T15:00:03.000+0000",
+      "createAt": "2021-09-08 00:03:31",
+      "serverNum": "0",
+      "identity": "",
+      "introduce": null,
+      "reviewStatus": "reviewed",
+      "onlineStatus": "onLine",
+      "telephone": "18825182319",
+      "age": "23",
+      "sex": "woman",
+      "language": "[\"普通话\", \"粤语\"]",
+      "fileVoList": []
+    }],
+    cartServerList: [{ serverId: '1631030611623' }],
+    hospitalId: []
+    // 1631026190305
   },
 
   subscriptions: {
@@ -84,6 +126,6 @@ export default {
         ...state,
         ...payload
       };
-    }
+    },
   }
 };
